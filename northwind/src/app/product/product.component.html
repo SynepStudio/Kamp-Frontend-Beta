@@ -1,0 +1,40 @@
+<button *ngIf="dataLoaded==false" class="border border-dark border-dark alert-dark" type="button" disabled>
+    <span   class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Yükleniyor...
+  </button>
+
+
+  <div class="mb-3">
+    <label for="filterText" class="form-label"> <i class="bi bi-search"></i>Ürün Ara</label>
+    <input type="text" [(ngModel)]="filterText" class=" form-control" id="filterText"
+     placeholder="Arama ifadesi giriniz">
+  </div>
+  <div *ngIf="filterText.length>2" class="alert alert-dark">
+    {{filterText}} <i class="bi bi-search"></i> Aradınız. <!-- Text kısmı -->
+  </div>
+
+<table *ngIf="dataLoaded==true"  class="table">
+
+    <thead>
+        <th>Id</th>
+        <th>Ürün Adı</th>
+        <th>Kategori</th>
+        <th>Fiyatı</th>
+        <th>Kdv'li</th>
+        <th>Stok Adedi</th>
+        <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products | filterPipe:filterText">
+        <td>{{product.productId}}</td>
+        <td>{{product.productName  |uppercase}}</td>
+        <td>{{product.categoryId}}</td>
+        <td>{{product.unitPrice | currency}}</td>
+        <td>{{product.unitPrice |vatAdded:18 | currency}}</td>
+        <td>{{product.unitsInStock}}</td>
+        <td><button (click)="addToCart(product)" type="button" class="btn  btn-success" class="border border-dark"> Sepete Ekle <i class="bi bi-bag-plus"></i></button></td>
+      </tr>
+
+    </tbody>
+    
+</table>
